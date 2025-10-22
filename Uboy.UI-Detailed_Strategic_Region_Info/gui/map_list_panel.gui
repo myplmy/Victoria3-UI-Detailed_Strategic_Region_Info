@@ -150,9 +150,17 @@ types map_list_panel_types {
 		}
 	}
 
+	# 맵 리스트 패널 아이템 상호작용 위젯 타입 (기본 템플릿)
+	# Map list panel item interaction widget type (base template)
+	# Strategic regions, interest groups 등 다양한 패널 타입에서 이 템플릿을 blockoverride하여 사용
+	# Various panel types (strategic regions, interest groups, etc.) use this template with blockoverride
 	type map_list_panel_item_interaction = widget {
 		size = { @panel_width 40 }
 
+		# 아이템 표시 조건 블록 - 각 패널 타입에서 오버라이드
+		# Item visibility condition block - overridden by each panel type
+		# 예: strategic_regions_map_list_panel에서 육지 여부로 필터링
+		# Example: strategic_regions_map_list_panel filters by land regions
 		block "itemvisibility" {}
 
 		block "background" {
@@ -204,6 +212,10 @@ types map_list_panel_types {
 
 			}
 
+			# 값 표시 블록 - 각 패널 타입에서 오버라이드
+			# Values display block - overridden by each panel type
+			# 예: strategic_regions_map_list_panel에서 이름, declared interests, GDP 표시
+			# Example: strategic_regions_map_list_panel displays name, declared interests, GDP
 			block "values" {
 				textbox = {
 					margin = { 5 5 }
@@ -226,6 +238,10 @@ types map_list_panel_types {
 					tooltip = "[MapListOption.GetTooltip]"
 				}
 
+				# 상호작용 블록 - 각 패널 타입에서 오버라이드
+				# Interaction block - overridden by each panel type
+				# 예: strategic_regions_map_list_panel에서 마우스 호버시 strategic region 하이라이트
+				# Example: strategic_regions_map_list_panel highlights strategic region on mouse hover
 				block "interaction" {
 					enabled = "[MapListOption.CanClick]"
 					onclick = "[MapListOption.OnClick]"
@@ -304,6 +320,10 @@ types map_list_panel_types {
 	}
 
 	### MAP LIST WINDOW
+	# 맵 리스트 패널 기본 타입 (기본 템플릿)
+	# Map list panel base type (base template)
+	# Strategic regions, interest groups 등 다양한 패널에서 이 타입을 상속하여 사용
+	# Various panels (strategic regions, interest groups, etc.) inherit this type
 	type map_list_panel = widget {
 		using = sidepanel_plus_sidebar_size
 		layoutpolicy_vertical = expanding
@@ -543,6 +563,10 @@ types map_list_panel_types {
 				direction = horizontal
 				margin = { 0 5 }
 
+				# 헤더(정렬 버튼) 블록 - 각 패널 타입에서 오버라이드
+				# Headers (sort buttons) block - overridden by each panel type
+				# 예: strategic_regions_map_list_panel에서 이름, declared interests, GDP 헤더 표시
+				# Example: strategic_regions_map_list_panel displays name, declared interests, GDP headers
 				block "headers" {
 					sort_button = {
 						align = hcenter|nobaseline
