@@ -150,9 +150,17 @@ types map_list_panel_types {
 		}
 	}
 
+	# 맵 리스트 패널 아이템 상호작용 위젯 타입 (기본 템플릿)
+	# Map list panel item interaction widget type (base template)
+	# Strategic regions, interest groups 등 다양한 패널 타입에서 이 템플릿을 blockoverride하여 사용
+	# Various panel types (strategic regions, interest groups, etc.) use this template with blockoverride
 	type map_list_panel_item_interaction = widget {
 		size = { @panel_width 40 }
 
+		# 아이템 표시 조건 블록 - 각 패널 타입에서 오버라이드
+		# Item visibility condition block - overridden by each panel type
+		# 예: strategic_regions_map_list_panel에서 육지 여부로 필터링
+		# Example: strategic_regions_map_list_panel filters by land regions
 		block "itemvisibility" {}
 
 		block "background" {
@@ -204,6 +212,10 @@ types map_list_panel_types {
 
 			}
 
+			# 값 표시 블록 - 각 패널 타입에서 오버라이드
+			# Values display block - overridden by each panel type
+			# 예: strategic_regions_map_list_panel에서 이름, declared interests, GDP 표시
+			# Example: strategic_regions_map_list_panel displays name, declared interests, GDP
 			block "values" {
 				textbox = {
 					margin = { 5 5 }
@@ -226,6 +238,10 @@ types map_list_panel_types {
 					tooltip = "[MapListOption.GetTooltip]"
 				}
 
+				# 상호작용 블록 - 각 패널 타입에서 오버라이드
+				# Interaction block - overridden by each panel type
+				# 예: strategic_regions_map_list_panel에서 마우스 호버시 strategic region 하이라이트
+				# Example: strategic_regions_map_list_panel highlights strategic region on mouse hover
 				block "interaction" {
 					enabled = "[MapListOption.CanClick]"
 					onclick = "[MapListOption.OnClick]"
@@ -304,6 +320,10 @@ types map_list_panel_types {
 	}
 
 	### MAP LIST WINDOW
+	# 맵 리스트 패널 기본 타입 (기본 템플릿)
+	# Map list panel base type (base template)
+	# Strategic regions, interest groups 등 다양한 패널에서 이 타입을 상속하여 사용
+	# Various panels (strategic regions, interest groups, etc.) inherit this type
 	type map_list_panel = widget {
 		using = sidepanel_plus_sidebar_size
 		layoutpolicy_vertical = expanding
@@ -543,6 +563,10 @@ types map_list_panel_types {
 				direction = horizontal
 				margin = { 0 5 }
 
+				# 헤더(정렬 버튼) 블록 - 각 패널 타입에서 오버라이드
+				# Headers (sort buttons) block - overridden by each panel type
+				# 예: strategic_regions_map_list_panel에서 이름, declared interests, GDP 헤더 표시
+				# Example: strategic_regions_map_list_panel displays name, declared interests, GDP headers
 				block "headers" {
 					sort_button = {
 						align = hcenter|nobaseline
@@ -3701,6 +3725,8 @@ types map_list_panel_types {
 			onclick = "[MapListPanelManager.CloseCurrentPanel]"
 		}
 
+		# 표시 조건: Strategic region이 육지인 경우에만 표시
+		# This determines visibility based on whether the strategic region is land
 		blockoverride "itemvisibility" {
 			visible = "[MapListOption.GetStrategicRegionData.GetStrategicRegion.IsLand]"
 		}
@@ -3725,7 +3751,11 @@ types map_list_panel_types {
 			}
 		}
 
+		# Strategic region 정보 표시: 이름, declared interests, GDP
+		# Displays strategic region info: name, declared interests, GDP
 		blockoverride "values" {
+			# Strategic region 이름 표시
+			# Display strategic region name
 			textbox = {
 				margin = { 5 0 }
 				size = { 135 25 }
@@ -3734,15 +3764,21 @@ types map_list_panel_types {
 				parentanchor = vcenter
 				elide = right
 			}
+			# Declared interests 표시 위젯
+			# Widget for displaying declared interests
 			widget = {
 				size = { 300 25 }
 				parentanchor = vcenter
 
+				# 해당 strategic region에 선언된 모든 interests를 표시
+				# Displays all interests declared in this strategic region
 				overlappingitembox = {
 					size = { 300 25 }
 					datacontext = "[MapListOption.GetStrategicRegionData.GetStrategicRegion]"
 					datamodel = "[StrategicRegion.GetInterests]"
 
+					# 각 declared interest 아이템 표시
+					# Display each declared interest item
 					item = {
 						container = {
 							tooltip = "INTEREST_MARKER_TOOLTIP"
@@ -3751,6 +3787,8 @@ types map_list_panel_types {
 							widget = {
 								size = { 35 33 }
 
+								# 비활성화된(선언만 된) interest의 국기 - 반투명
+								# Flag for inactive (declared) interest - semi-transparent
 								tiny_flag = {
 									position = { 0 -2 }
 									visible = "[Not(Interest.IsActive)]"
@@ -3759,6 +3797,8 @@ types map_list_panel_types {
 									parentanchor = center
 									alpha = 0.3
 								}
+								# 활성화된 interest의 국기 - 불투명
+								# Flag for active interest - opaque
 								tiny_flag = {
 									position = { 0 -2 }
 									visible = "[Interest.IsActive]"
@@ -3767,6 +3807,8 @@ types map_list_panel_types {
 									parentanchor = center
 								}
 
+								# Interest 진행도 표시 바
+								# Interest progress bar
 								widget = {
 									size = { 25 4 }
 									position = { 0 12 }
@@ -3799,6 +3841,8 @@ types map_list_panel_types {
 				}
 			}
 
+			# Strategic region의 총 GDP 표시
+			# Display total GDP of the strategic region
 			textbox = {
 				margin = { 5 0 }
 				size = { 95 25 }
@@ -3809,6 +3853,8 @@ types map_list_panel_types {
 			}
 		}
 
+		# 마우스 상호작용: Strategic region 하이라이트 표시
+		# Mouse interaction: Highlight strategic region on hover
 		blockoverride "interaction" {
 			onmousehierarchyenter = "[AccessHighlightManager.HighlightStrategicRegion(MapListOption.GetStrategicRegionData.GetStrategicRegion)]"
 			onmousehierarchyleave = "[AccessHighlightManager.RemoveHighlight]"
