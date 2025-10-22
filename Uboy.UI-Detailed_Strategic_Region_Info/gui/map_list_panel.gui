@@ -217,7 +217,35 @@ types map_list_panel_types {
 			# 예: strategic_regions_map_list_panel에서 이름, declared interests, GDP 표시
 			# Example: strategic_regions_map_list_panel displays name, declared interests, GDP
 			block "values" {
+
+                textbox = {
+                    visible = "[EqualTo_string(MapListPanel.GetTitle, Localize('MAP_INTERACTION_DECLARE_INTEREST_DESC'))]"
+                    margin = { 5 5 }
+                    size = { 485 25 }
+                    align = nobaseline
+                    text = "[MapListOption.GetTitle]"
+                    parentanchor = vcenter
+                    elide = right
+                    
+                    tooltipwidget = {
+                        FancyTooltipWidgetType = {
+                            blockoverride "name" {
+                                text = "[MapListOption.GetTitle]"
+                            }
+                            
+                            blockoverride "type" {
+                                text = "TOOLTIP_TYPE_STRATEGIC_REGION"
+                            }
+                            
+                            blockoverride "text" {
+                                text = "Detailed Info"
+                            }
+                        }
+                    }
+                }
+
 				textbox = {
+                    visible = "[Not(EqualTo_string(MapListPanel.GetTitle, Localize('MAP_INTERACTION_DECLARE_INTEREST_DESC')))]"
 					margin = { 5 5 }
 					size = { 485 25 }
 					align = nobaseline
