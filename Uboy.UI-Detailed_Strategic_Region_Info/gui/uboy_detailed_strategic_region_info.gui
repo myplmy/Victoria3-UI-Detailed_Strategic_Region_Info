@@ -1,0 +1,50 @@
+types uboy_detailed_strategic_region_info_types{
+    type FancyTooltip_StrategicRegion_uboy = FancyTooltipWidgetType {
+        blockoverride "text" {
+            text = "DATA_STRATEGIC_REGION_NAME_TOOLTIP"
+        }
+
+        blockoverride "name" {
+            text = "[StrategicRegion.GetNameNoFormatting]"
+        }
+
+        blockoverride "type" {
+            text = "TOOLTIP_TYPE_STRATEGIC_REGION"
+        }
+
+        blockoverride "tooltip_content_after" {
+            overlappingitembox = {
+                size = { 540 25 }
+                datamodel = "[StrategicRegion.GetInterests]"
+    
+                item = {
+                    container = {
+                        tooltip = "INTEREST_MARKER_TOOLTIP"
+                        using = tooltip_above
+
+                        widget = {
+                            size = { 35 33 }
+
+                            tiny_flag = {
+                                position = { 0 -2 }
+                                visible = "[Not(Interest.IsActive)]"
+                                datacontext = "[Interest.GetOwner]"
+                                blockoverride "tooltip" {}
+                                parentanchor = center
+                                alpha = 0.3
+                            }
+                            tiny_flag = {
+                                position = { 0 -2 }
+                                visible = "[Interest.IsActive]"
+                                datacontext = "[Interest.GetOwner]"
+                                blockoverride "tooltip" {}
+                                parentanchor = center
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

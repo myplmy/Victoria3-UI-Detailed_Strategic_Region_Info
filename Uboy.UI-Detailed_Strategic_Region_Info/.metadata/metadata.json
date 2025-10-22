@@ -1,0 +1,13 @@
+{
+  "name" : "Uboy.UI-Detailed_Strategic_Region_Info",
+  "id" : "uboy.ui.detailedstrategicregioninfo",
+  "version" : "1.2.0",
+  "supported_game_version" : "1.11.*",
+  "picture": "thumbnail.png",
+  "short_description" : "Shows all countries with a declared interest in a specific strategic region.",
+  "tags" : ["Utilities", "UI"],
+  "relationships" : [],
+  "game_custom_data" : {
+    "multiplayer_synchronized" : true
+  }
+}
